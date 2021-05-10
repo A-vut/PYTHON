@@ -1,0 +1,84 @@
+ 
+Parse
+1. Cell list
+2. Area of each cell
+3. Pin list of each cell. Power, input and output pins
+4. Function of each output pin of each cell
+5. index_1, index_2, values of cell_rise, rise_transition, cell_fall and fall_transition of each output pin of each cell
+6. Return a data structure to easy access each information of each cell for comparison, graph generation etc.
+ 
+  pg_pin (VDD) {
+   pg_type : primary_power;
+   related_bias_pin : "VNW";
+   voltage_name : "VDD";
+  }
+  pg_pin (VNW) {
+   pg_type : nwell;
+   physical_connection : device_layer;
+   voltage_name : "VNW";
+  }
+  pg_pin (VPW) {
+   pg_type : pwell;
+   physical_connection : device_layer;
+   voltage_name : "VPW";
+  }
+  pg_pin (VSS) {
+   pg_type : primary_ground;
+   related_bias_pin : "VPW";
+   voltage_name : "VSS";
+  }
+ {'VDD': {'pin_name': 'VDD', 'pg_type': 'primary_power', 'related_bias_pin': '"VNW"', 'physical_connection': ('',), 'voltage_name': '"VDD"'},
+ 'VNW': {'pin_name': 'VNW', 'pg_type': 'nwell', 'related_bias_pin': ('',), 'physical_connection': 'device_layer', 'voltage_name': '"VNW"'}, 
+ 'VPW': {'pin_name': 'VPW', 'pg_type': 'pwell', 'related_bias_pin': ('',), 'physical_connection': 'device_layer', 'voltage_name': '"VPW"'},
+ 'VSS': {'pin_name': 'VSS', 'pg_type': 'primary_ground', 'related_bias_pin': '"VPW"', 'physical_connection': ('',), 'voltage_name': '"VSS"'}}
+  pg_pin (VDD) {
+   pg_type : primary_power;
+   related_bias_pin : "VNW";
+   voltage_name : "VDD";
+  }
+  pg_pin (VNW) {
+   pg_type : nwell;
+   physical_connection : device_layer;
+   voltage_name : "VNW";
+  }
+  pg_pin (VPW) {
+   pg_type : pwell;
+   physical_connection : device_layer;
+   voltage_name : "VPW";
+  }
+  pg_pin (VSS) {
+   pg_type : primary_ground;
+   related_bias_pin : "VPW";
+   voltage_name : "VSS";
+  }
+{'pin_name': 'VDD', 'pg_type': 'primary_power', 'related_bias_pin': '"VNW"', 'physical_connection': ('',), 'voltage_name': '"VDD"'}
+{'pin_name': 'VNW', 'pg_type': 'nwell', 'related_bias_pin': ('',), 'physical_connection': 'device_layer', 'voltage_name': '"VNW"'}
+{'pin_name': 'VPW', 'pg_type': 'pwell', 'related_bias_pin': ('',), 'physical_connection': 'device_layer', 'voltage_name': '"VPW"'}
+{'pin_name': 'VSS', 'pg_type': 'primary_ground', 'related_bias_pin': '"VPW"', 'physical_connection': ('',), 'voltage_name': '"VSS"'}  
+ 
+ {'VDD': {'pin_name': 'VDD', 'pg_type': 'primary_power', 'related_bias_pin': '"VNW"', 'physical_connection': ('',), 'voltage_name': '"VDD"'},
+ 'VNW': {'pin_name': 'VNW', 'pg_type': 'nwell', 'related_bias_pin': ('',), 'physical_connection': 'device_layer', 'voltage_name': '"VNW"'}, 
+ 'VPW': {'pin_name': 'VPW', 'pg_type': 'pwell', 'related_bias_pin': ('',), 'physical_connection': 'device_layer', 'voltage_name': '"VPW"'},
+ 'VSS': {'pin_name': 'VSS', 'pg_type': 'primary_ground', 'related_bias_pin': '"VPW"', 'physical_connection': ('',), 'voltage_name': '"VSS"'}}
+ 
+ pg_pin (VDD) {
+   pg_type : primary_power;
+   related_bias_pin : "VNW";
+   voltage_name : "VDD";
+  }
+  pg_pin (VNW) {
+   pg_type : nwell;
+   physical_connection : device_layer;
+   voltage_name : "VNW";
+  }
+  pg_pin (VPW) {
+   pg_type : pwell;
+   physical_connection : device_layer;
+   voltage_name : "VPW";
+  }
+  pg_pin (VSS) {
+   pg_type : primary_ground;
+   related_bias_pin : "VPW";
+   voltage_name : "VSS";
+  }
+ 
