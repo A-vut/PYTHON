@@ -218,7 +218,8 @@ with open("test_parse.lib","r") as inline:
                         scope=remove_cb(re.findall("}", line))
                         # print(pin_name,len(scope),line)
                         
-                        pin_type=pin_function=related_power_pin=related_ground_pin="",
+                        pin_type=pin_function=related_power_pin=related_ground_pin=related_bias_pin="",
+                        max_transition=capacitance=rise_capacitance=min_capacitance=max_capacitance=""
                         while len(scope)>=2:
                             # print(pin_name,len(scope),line)
                         # #     # print(name, pin_name,"Size of scope :",len(scope),scope)
@@ -254,6 +255,35 @@ with open("test_parse.lib","r") as inline:
                                             related_ground_pin+=line[i]
                                             i+=1
                                         x=i
+                            elif re.search(r"\brelated_bias_pin", line):
+                                for x in range(0,len(line),1):
+                                    if line[x] == ':' and line[x+1]=="\"":
+                                        i=x+2
+                                        related_bias_pin=""
+                                        while(line[i]!='\"'):
+                                            related_bias_pin+=line[i]
+                                            i+=1
+                                        x=i
+                            elif re.search(r"\bmax_transition", line):
+                                if re.search("[0-9]+(\.[0-9]+)*",line):
+                                    max_transition=re.search("[0-9]+(\.[0-9]+)*",line).group()
+                            elif re.search(r"\bcapacitance", line):
+                                if re.search("[0-9]+(\.[0-9]+)*",line):
+                                    capacitance=re.search("[0-9]+(\.[0-9]+)*",line).group()
+                            elif re.search(r"\brise_capacitance", line):
+                                if re.search("[0-9]+(\.[0-9]+)*",line):
+                                    rise_capacitance=re.search("[0-9]+(\.[0-9]+)*",line).group()
+                            elif re.search(r"\bfall_capacitance", line):
+                                if re.search("[0-9]+(\.[0-9]+)*",line):
+                                    fall_capacitance=re.search("[0-9]+(\.[0-9]+)*",line).group()
+                            elif re.search(r"\bmin_capacitance", line):
+                                if re.search("[0-9]+\.[0-9]+([e-]*[0-9]+)*",line):
+                                    min_capacitance=re.search("[0-9]+\.[0-9]+([e-]*[0-9]+)*",line).group()
+                            elif re.search(r"\bmax_capacitance", line):
+                                if re.search("[0-9]+\.[0-9]+([e-]*[0-9]+)*",line):
+                                    max_capacitance=re.search("[0-9]+\.[0-9]+([e-]*[0-9]+)*",line).group()
+
+                            
                             
                             line=inline.readline()
                             line=line.replace(" ", "")
@@ -269,7 +299,9 @@ with open("test_parse.lib","r") as inline:
                                 if pin_type=='input':
                                     temp_input_pin=create_input_pin_dict(pin_name,pin_name=pin_name,pin_type=pin_type,
                                     related_power_pin=related_power_pin,
-                                    related_ground_pin=related_ground_pin
+                                    related_ground_pin=related_ground_pin, related_bias_pin=related_bias_pin,
+                                    max_transition=max_transition,capacitance=capacitance,
+                                    rise_capacitance=rise_capacitance,fall_capacitance=fall_capacitance
                                     )
                                     # print(name, pin_name,pin_type,line)
                                     input_pin[pin_name]=temp_input_pin.copy()
@@ -279,33 +311,26 @@ with open("test_parse.lib","r") as inline:
                                 elif pin_type=="output":
                                     temp_output_pin=create_output_pin_dict(pin_name,pin_name=pin_name,pin_type=pin_type,
                                     pin_function=pin_function, related_power_pin=related_power_pin,
-                                    related_ground_pin=related_ground_pin
+                                    related_ground_pin=related_ground_pin,related_bias_pin=related_bias_pin,
+                                    max_transition=max_transition,min_capacitance=min_capacitance,
+                                    max_capacitance=max_capacitance
                                     )
                                     output_pin[pin_name]=temp_output_pin.copy()
 
                                     # print(name,"Exit from pin :",pin_name,pin_type,pin_function,related_power_pin,
                                     #     related_ground_pin,len(scope),line)
                                     # print(name, pin_name,pin_type,line)
-                                # break
-                        
-                        # line=inline.readline()
-                        # line=line.replace(" ", "")
-                        # scope=add_cb(re.findall("{", line))
-                        # scope=remove_cb(re.findall("}", line))
-                        # print(name,":",line)
-                    # print(name,power_pin)
-                        # print("Line :",line,name,power_pin)
-                
 
-
-                line=inline.readline()
                 # read the line for next iteration for next cell 
-            # line=inline.readline()
+                line=inline.readline()
                 
         else:
             line=inline.readline()
             # line=line.replace(" ", "")
 
+
+    # Show the outputs: 
+    
     # print(dct)
     # print(list1)
     # print(dictionary)
