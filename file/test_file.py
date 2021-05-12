@@ -4,9 +4,17 @@ dictionary = {}
 scope=[]
 # power_pin={}
 
+
 def create_root_dictionary(name,**kwargs):
     # print(type(kwargs))
     dictionary[name]=kwargs
+
+def create_timing_data_dict(**kwargs):
+    timing_data=kwargs
+    return timing_data
+def create_timing_dict(name,**kwargw):
+    timing[name]=kwargw
+    return timing[name]
 
 def create_power_pin_dict(name, **kwargs):
     power_pin[name]=kwargs
@@ -18,6 +26,7 @@ def create_input_pin_dict(name, **kwargs):
 def create_output_pin_dict(name, **kwargs):
     power_pin[name]=kwargs
     return power_pin[name]
+
 
 def add_cb(list_data):
     for x in list_data:
@@ -55,6 +64,7 @@ with open("test_parse.lib","r") as inline:
         power_pin={}
         input_pin={}
         output_pin={}
+        timing={}
 
         # variable declare ends
         scope.clear()
@@ -282,9 +292,233 @@ with open("test_parse.lib","r") as inline:
                             elif re.search(r"\bmax_capacitance", line):
                                 if re.search("[0-9]+\.[0-9]+([e-]*[0-9]+)*",line):
                                     max_capacitance=re.search("[0-9]+\.[0-9]+([e-]*[0-9]+)*",line).group()
+                            elif re.search(r"\btiming\(\){",line) and pin_type=="output":
+                                # Started new scope name timing:
+                                # pass
+                                # take next line input
+                                # here value of scope len = 3
+                                # continue a loop until all values are read means scope length is >=3
+                                while len(scope)>=3:
 
-                            
-                            
+                                    index_1=index_2=[]
+                                    values=[]
+                                    line=inline.readline()
+                                    line=line.replace(" ", "")
+                                    scope=add_cb(re.findall("{", line))
+                                    scope=remove_cb(re.findall("}", line))
+                                    if re.search(r"\brelated_pin",line):
+                                        related_pin=re.search("[A-Z]+",line).group()
+                                    elif re.search(r"\bcell_rise\([a-z_]+\){",line):
+                                        # pass
+                                        # read next line to store index_1, index_2 and values in list
+                                        # break the loop when scope len < 4. in this line scope len = 4 
+
+                                        while len(scope)>=4:
+
+                                            line=inline.readline()
+                                            line=line.replace(" ", "")
+                                            scope=add_cb(re.findall("{", line))
+                                            scope=remove_cb(re.findall("}", line))
+                                            if re.search(r"\bindex_1",line):
+                                                # store all values in a list
+                                                index_1=re.findall("[0-9]+\.[0-9]+[e-]*[0-9]*",line)
+                                                # pass
+                                            elif re.search(r"\bindex_2",line):
+                                                # store all values in a list
+                                                index_2=re.findall("[0-9]+\.[0-9]+[e-]*[0-9]*",line)
+                                                # pass
+                                            elif re.search(r"\bvalues\(",line):
+                                                # read next lines of values until line=');'
+                                                # run a loop and store values in a 2D list
+                                                # pass
+                                                line=inline.readline()
+                                                line=line.replace(" ", "")
+                                                scope=add_cb(re.findall("{", line))
+                                                scope=remove_cb(re.findall("}", line))
+                                                count=0
+                                                while not re.search(r"\);",line):
+                                                    #pass
+                                                    # print(count,"Loop entered here")
+                                                    values.append(re.findall("[0-9]+\.[0-9]+",line))
+                                                    count+=1
+
+                                                    line=inline.readline()
+                                                    line=line.replace(" ", "")
+                                                    scope=add_cb(re.findall("{", line))
+                                                    scope=remove_cb(re.findall("}", line))
+                                        # print(index_1)
+                                        # print(index_2)
+                                        # print(values)
+                                        # for x in values:
+                                        #     print(x)
+                                        
+                                        # print("\n")
+
+                                        # push all cell_rise value into a dictionary name cell_rise
+                                        cell_rise=create_timing_data_dict(index_1=index_1.copy(),
+                                            index_2=index_2.copy(), values=values.copy()
+                                        )
+                                        # print(name,"cell_rise :",cell_rise)
+                                    elif re.search(r"\brise_transition\([a-z_]+\){",line):
+                                        # pass
+                                        # read next line to store index_1, index_2 and values in list
+                                        # break the loop when scope len < 4. in this line scope len = 4 
+
+                                        while len(scope)>=4:
+
+                                            line=inline.readline()
+                                            line=line.replace(" ", "")
+                                            scope=add_cb(re.findall("{", line))
+                                            scope=remove_cb(re.findall("}", line))
+                                            if re.search(r"\bindex_1",line):
+                                                # store all values in a list
+                                                index_1=re.findall("[0-9]+\.[0-9]+[e-]*[0-9]*",line)
+                                                # pass
+                                            elif re.search(r"\bindex_2",line):
+                                                # store all values in a list
+                                                index_2=re.findall("[0-9]+\.[0-9]+[e-]*[0-9]*",line)
+                                                # pass
+                                            elif re.search(r"\bvalues\(",line):
+                                                # read next lines of values until line=');'
+                                                # run a loop and store values in a 2D list
+                                                # pass
+                                                line=inline.readline()
+                                                line=line.replace(" ", "")
+                                                scope=add_cb(re.findall("{", line))
+                                                scope=remove_cb(re.findall("}", line))
+                                                count=0
+                                                while not re.search(r"\);",line):
+                                                    #pass
+                                                    # print(count,"Loop entered here")
+                                                    values.append(re.findall("[0-9]+\.[0-9]+",line))
+                                                    count+=1
+
+                                                    line=inline.readline()
+                                                    line=line.replace(" ", "")
+                                                    scope=add_cb(re.findall("{", line))
+                                                    scope=remove_cb(re.findall("}", line))
+                                        # print(index_1)
+                                        # print(index_2)
+                                        # print(values)
+                                        # for x in values:
+                                        #     print(x)
+                                        
+                                        # print("\n")
+
+                                        # push all cell_rise value into a dictionary name cell_rise
+                                        rise_transition=create_timing_data_dict(index_1=index_1.copy(),
+                                            index_2=index_2.copy(), values=values.copy()
+                                        )
+                                        # print(name,"rise_transition :",rise_transition)
+                                    elif re.search(r"\bcell_fall\([a-z_]+\){",line):
+                                        # pass
+                                        # read next line to store index_1, index_2 and values in list
+                                        # break the loop when scope len < 4. in this line scope len = 4 
+
+                                        while len(scope)>=4:
+
+                                            line=inline.readline()
+                                            line=line.replace(" ", "")
+                                            scope=add_cb(re.findall("{", line))
+                                            scope=remove_cb(re.findall("}", line))
+                                            if re.search(r"\bindex_1",line):
+                                                # store all values in a list
+                                                index_1=re.findall("[0-9]+\.[0-9]+[e-]*[0-9]*",line)
+                                                # pass
+                                            elif re.search(r"\bindex_2",line):
+                                                # store all values in a list
+                                                index_2=re.findall("[0-9]+\.[0-9]+[e-]*[0-9]*",line)
+                                                # pass
+                                            elif re.search(r"\bvalues\(",line):
+                                                # read next lines of values until line=');'
+                                                # run a loop and store values in a 2D list
+                                                # pass
+                                                line=inline.readline()
+                                                line=line.replace(" ", "")
+                                                scope=add_cb(re.findall("{", line))
+                                                scope=remove_cb(re.findall("}", line))
+                                                count=0
+                                                while not re.search(r"\);",line):
+                                                    #pass
+                                                    # print(count,"Loop entered here")
+                                                    values.append(re.findall("[0-9]+\.[0-9]+",line))
+                                                    count+=1
+
+                                                    line=inline.readline()
+                                                    line=line.replace(" ", "")
+                                                    scope=add_cb(re.findall("{", line))
+                                                    scope=remove_cb(re.findall("}", line))
+                                        # print(index_1)
+                                        # print(index_2)
+                                        # print(values)
+                                        # for x in values:
+                                        #     print(x)
+                                        
+                                        # print("\n")
+
+                                        # push all cell_rise value into a dictionary name cell_rise
+                                        cell_fall=create_timing_data_dict(index_1=index_1.copy(),
+                                            index_2=index_2.copy(), values=values.copy()
+                                        )
+                                        # print(name,"cell_fall :",cell_fall)
+                                    elif re.search(r"\bfall_transition\([a-z_]+\){",line):
+                                        # pass
+                                        # read next line to store index_1, index_2 and values in list
+                                        # break the loop when scope len < 4. in this line scope len = 4 
+
+                                        while len(scope)>=4:
+
+                                            line=inline.readline()
+                                            line=line.replace(" ", "")
+                                            scope=add_cb(re.findall("{", line))
+                                            scope=remove_cb(re.findall("}", line))
+                                            if re.search(r"\bindex_1",line):
+                                                # store all values in a list
+                                                index_1=re.findall("[0-9]+\.[0-9]+[e-]*[0-9]*",line)
+                                                # pass
+                                            elif re.search(r"\bindex_2",line):
+                                                # store all values in a list
+                                                index_2=re.findall("[0-9]+\.[0-9]+[e-]*[0-9]*",line)
+                                                # pass
+                                            elif re.search(r"\bvalues\(",line):
+                                                # read next lines of values until line=');'
+                                                # run a loop and store values in a 2D list
+                                                # pass
+                                                line=inline.readline()
+                                                line=line.replace(" ", "")
+                                                scope=add_cb(re.findall("{", line))
+                                                scope=remove_cb(re.findall("}", line))
+                                                count=0
+                                                while not re.search(r"\);",line):
+                                                    #pass
+                                                    # print(count,"Loop entered here")
+                                                    values.append(re.findall("[0-9]+\.[0-9]+",line))
+                                                    count+=1
+
+                                                    line=inline.readline()
+                                                    line=line.replace(" ", "")
+                                                    scope=add_cb(re.findall("{", line))
+                                                    scope=remove_cb(re.findall("}", line))
+                                        # print(index_1)
+                                        # print(index_2)
+                                        # print(values)
+                                        # for x in values:
+                                        #     print(x)
+                                        
+                                        # print("\n")
+
+                                        # push all cell_rise value into a dictionary name cell_rise
+                                        fall_transition=create_timing_data_dict(index_1=index_1.copy(),
+                                            index_2=index_2.copy(), values=values.copy()
+                                        )
+                                        # print(name,"fall_transition :",fall_transition)
+                                # insert value of each pin in the timing dictionary
+                                timing_pin= str("timing_"+related_pin)
+                                timing[timing_pin]=create_timing_dict(timing_pin,cell_rise=cell_rise,
+                                rise_transition=rise_transition,cell_fall=cell_fall,
+                                fall_transition=fall_transition
+                                )
+
                             line=inline.readline()
                             line=line.replace(" ", "")
                             scope=add_cb(re.findall("{", line))
@@ -297,25 +531,26 @@ with open("test_parse.lib","r") as inline:
 
                             if len(scope)<2:
                                 if pin_type=='input':
-                                    temp_input_pin=create_input_pin_dict(pin_name,pin_name=pin_name,pin_type=pin_type,
-                                    related_power_pin=related_power_pin,
+                                    input_pin[pin_name]=create_input_pin_dict(pin_name,pin_name=pin_name,
+                                    pin_type=pin_type,related_power_pin=related_power_pin,
                                     related_ground_pin=related_ground_pin, related_bias_pin=related_bias_pin,
                                     max_transition=max_transition,capacitance=capacitance,
                                     rise_capacitance=rise_capacitance,fall_capacitance=fall_capacitance
                                     )
                                     # print(name, pin_name,pin_type,line)
-                                    input_pin[pin_name]=temp_input_pin.copy()
+                                    # input_pin[pin_name]=temp_input_pin.copy()
                                     # print(name,"Exit from pin :",pin_name,pin_type,pin_function,related_power_pin,
                                     #     related_ground_pin,len(scope),line)
 
                                 elif pin_type=="output":
-                                    temp_output_pin=create_output_pin_dict(pin_name,pin_name=pin_name,pin_type=pin_type,
+                                    output_pin[pin_name]=create_output_pin_dict(pin_name,pin_name=pin_name,pin_type=pin_type,
                                     pin_function=pin_function, related_power_pin=related_power_pin,
                                     related_ground_pin=related_ground_pin,related_bias_pin=related_bias_pin,
                                     max_transition=max_transition,min_capacitance=min_capacitance,
-                                    max_capacitance=max_capacitance
+                                    max_capacitance=max_capacitance,timing=timing
                                     )
-                                    output_pin[pin_name]=temp_output_pin.copy()
+                                    # timing.clear()
+                                    # output_pin[pin_name]=temp_output_pin.copy()
 
                                     # print(name,"Exit from pin :",pin_name,pin_type,pin_function,related_power_pin,
                                     #     related_ground_pin,len(scope),line)
@@ -337,13 +572,17 @@ with open("test_parse.lib","r") as inline:
 
     # for keys, values in dictionary.items():
     #     print(keys,":",values)
+    #     print("\n")
+    
+    # print("\n")
 
     # print(dictionary["9INV_X0P5M_A9TR_W3"]['cell_footprint'])
     # print(dictionary["9INV_X0P5M_A9TR_W3"]["area"])
     # print(dictionary["9INV_X0P5M_A9TR_W3"]['cell_leakage_power'])
     # print(dictionary["9INV_X0P5M_A9TR_W3"]['input_pin'])
     # print(dictionary["3AND2_X11M_A9TR_W3"]['input_pin'])
-    # print(dictionary["3AND2_X11M_A9TR_W3"]['output_pin'])
+    # print(dictionary["3AND2_X11M_A9TR_W3"]['output_pin']
+    print(dictionary["3AND2_X11M_A9TR_W3"]['output_pin']['Y']['timing']['timing_B']['rise_transition']['values'])
     # print("\n9INV_X0P5M_A9TR_W3 :",dictionary["9INV_X0P5M_A9TR_W3"]['power_pin'])
     # print("\n6BUF_X0P8B_A9TR_W3 :",dictionary["6BUF_X0P8B_A9TR_W3"]['power_pin'])
     # print(dictionary["12INV_X0P7B_A9TR_W3"]['power_pin']["VDD"])
