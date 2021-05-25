@@ -360,7 +360,6 @@ with open("test_parse.lib","r") as inline:
                                         )
                                         # print(name,"cell_rise :",cell_rise)
                                     elif re.search(r"\brise_transition\([a-z_]+\){",line):
-                                        # pass
                                         # read next line to store index_1, index_2 and values in list
                                         # break the loop when scope len < 4. in this line scope len = 4 
 
@@ -576,13 +575,15 @@ with open("test_parse.lib","r") as inline:
     
     # print("\n")
 
-    # print(dictionary["9INV_X0P5M_A9TR_W3"]['cell_footprint'])
+    # print(dictionary["9INV_X0P5M_A9TR_W3"])
+    # print(dictionary["9INV_X0P5M_A9TR_W3"]["cell_footprint"])
     # print(dictionary["9INV_X0P5M_A9TR_W3"]["area"])
     # print(dictionary["9INV_X0P5M_A9TR_W3"]['cell_leakage_power'])
     # print(dictionary["9INV_X0P5M_A9TR_W3"]['input_pin'])
     # print(dictionary["3AND2_X11M_A9TR_W3"]['input_pin'])
     # print(dictionary["3AND2_X11M_A9TR_W3"]['output_pin']
-    print(dictionary["3AND2_X11M_A9TR_W3"]['output_pin']['Y']['timing']['timing_B']['rise_transition']['values'])
+    # print(dictionary["3AND2_X11M_A9TR_W3"]
+    #     ['output_pin']['Y']['timing']['timing_B']['rise_transition']['values'])
     # print("\n9INV_X0P5M_A9TR_W3 :",dictionary["9INV_X0P5M_A9TR_W3"]['power_pin'])
     # print("\n6BUF_X0P8B_A9TR_W3 :",dictionary["6BUF_X0P8B_A9TR_W3"]['power_pin'])
     # print(dictionary["12INV_X0P7B_A9TR_W3"]['power_pin']["VDD"])
