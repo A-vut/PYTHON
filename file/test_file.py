@@ -21,11 +21,11 @@ def create_power_pin_dict(name, **kwargs):
     return power_pin[name]
 
 def create_input_pin_dict(name, **kwargs):
-    power_pin[name]=kwargs
-    return power_pin[name]
+    input_pin[name]=kwargs
+    return input_pin[name]
 def create_output_pin_dict(name, **kwargs):
-    power_pin[name]=kwargs
-    return power_pin[name]
+    output_pin[name]=kwargs
+    return output_pin[name]
 
 
 def add_cb(list_data):
@@ -582,8 +582,8 @@ with open("test_parse.lib","r") as inline:
     # print(dictionary["9INV_X0P5M_A9TR_W3"]['input_pin'])
     # print(dictionary["3AND2_X11M_A9TR_W3"]['input_pin'])
     # print(dictionary["3AND2_X11M_A9TR_W3"]['output_pin']
-    # print(dictionary["3AND2_X11M_A9TR_W3"]
-    #     ['output_pin']['Y']['timing']['timing_B']['rise_transition']['values'])
+    print(dictionary["3AND2_X11M_A9TR_W3"]
+        ['output_pin']['Y']['timing']['timing_B']['rise_transition']['values'])
     # print("\n9INV_X0P5M_A9TR_W3 :",dictionary["9INV_X0P5M_A9TR_W3"]['power_pin'])
     # print("\n6BUF_X0P8B_A9TR_W3 :",dictionary["6BUF_X0P8B_A9TR_W3"]['power_pin'])
     # print(dictionary["12INV_X0P7B_A9TR_W3"]['power_pin']["VDD"])
